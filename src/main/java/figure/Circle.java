@@ -5,6 +5,8 @@ public class Circle extends Figure {
     private int radius;
 
     public Circle(int radius) {
+
+        if (radius < 0) throw new IllegalArgumentException();
         this.radius = radius;
     }
 
@@ -18,6 +20,6 @@ public class Circle extends Figure {
 
     @Override
     public double calculateSquare() {
-        return 0;
+        return (double)((int)(Math.PI * radius * radius * 10000))/10000;
     }
 }

@@ -16,7 +16,7 @@ public class RectangleTest {
     @Test
     public void getSquareTestWithZeroParameters() throws Exception {
         Figure rectangle = new Rectangle(0, 0);
-        assertThat(rectangle.calculateSquare(), is(0));
+        assertThat(rectangle.calculateSquare(), is(0.0));
     }
 
     @Test(expected = IllegalArgumentException.class)

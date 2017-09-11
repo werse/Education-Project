@@ -16,7 +16,7 @@ public class CircleTest {
     @Test
     public void getSquareTestWithZeroRadius() throws Exception {
         Figure circle = new Circle(0);
-        assertThat(circle.calculateSquare(), is(0));
+        assertThat(circle.calculateSquare(), is(0.0));
     }
 
     @Test(expected = IllegalArgumentException.class)
