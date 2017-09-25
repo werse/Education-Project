@@ -2,8 +2,8 @@ package employees;
 
 import org.junit.Test;
 
-import java.time.LocalDate;
-
+import static employees.Worker.workerBuilder;
+import static java.time.LocalDate.parse;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
@@ -11,17 +11,10 @@ public class EmployeeTest {
 
   @Test
   public void employeesWork() throws Exception {
-    Worker johnSmith = new Worker.WorkerBuilder("John", "Smith")
-            .dateOfBirth(LocalDate.of(2000, 3, 6))
-            .build();
-    Worker annaSmith = new Worker.WorkerBuilder("Anna", "Smith")
-            .build();
-    Worker jamesMaser = new Worker.WorkerBuilder("James", "Maser")
-            .middleName("Alfred")
-            .build();
-    Worker mosesPollard = new Worker.WorkerBuilder("Moses", "Pollard")
-            .middleName("Carl")
-            .build();
+    Worker johnSmith = workerBuilder().firstName("John").lastName("Smith").dateOfBirth(parse("2000-06-03")).build();
+    Worker annaSmith = workerBuilder().firstName("Anna").lastName("Smith").build();
+    Worker jamesMaser = workerBuilder().firstName("James").lastName("Maser").middleName("Alfred").build();
+    Worker mosesPollard = workerBuilder().firstName("Moses").lastName("Pollard").middleName("Carl").build();
 
     Employee john = new Employee(johnSmith, jamesMaser, "Google", 13);
     Employee anna = new Employee(annaSmith, jamesMaser, "Google", 12);
@@ -36,11 +29,5 @@ public class EmployeeTest {
     System.out.println(john.getSubordinates());
 
     System.out.println(moses.getSuperior());
-  }
-
-
-  // TODO: 21.09.2017 Create method. that generates email for worker with pattern {FirstName}_{LastName}@{@OrganizationDomain}
-  private static String createEmail(Worker worker) {
-    return worker.getFirstName() + "_"+ worker.getLastName()
   }
 }
