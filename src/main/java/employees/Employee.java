@@ -10,17 +10,23 @@ public class Employee {
   private Worker worker;
   private List<Worker> subordinates;
   private Worker superior;
+  private String organization;
+  private int experience;
 
-  public Employee(Worker worker, Worker superior) {
+  public Employee(Worker worker, Worker superior, String organization, int experience) {
     this.worker = worker;
     this.subordinates = emptyList();
     this.superior = superior;
+    this.organization = organization;
+    this.experience = experience;
   }
 
-  Employee(Worker worker, List<Worker> subordinates, Worker superior) {
+  Employee(Worker worker, List<Worker> subordinates, Worker superior, String organization, int experience) {
     this.worker = worker;
     this.subordinates = subordinates;
     this.superior = superior;
+    this.organization = organization;
+    this.experience = experience;
   }
 
   public Worker getWorker() {
@@ -47,16 +53,33 @@ public class Employee {
     this.superior = superior;
   }
 
+  public String getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(String organization) {
+    this.organization = organization;
+  }
+
+  public int getExperience() {
+    return experience;
+  }
+
+  public void setExperience(int experience) {
+    this.experience = experience;
+  }
+
   @Override
   public String toString() {
     return "Employee{" +
-      "worker=" + worker +
-      ", subordinates=" + subordinates +
-      ", superior=" + superior +
-      '}';
+            "worker=" + worker +
+            ", subordinates=" + subordinates +
+            ", superior=" + superior +
+            ", organization='" + organization + '\'' +
+            ", experience=" + experience +
+            " months" +
+            '}';
   }
-
-  // TODO: 21.09.2017 All employees should be part of organization and have work experience
 }
 
 
