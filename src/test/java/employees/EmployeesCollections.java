@@ -3,10 +3,8 @@ package employees;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -15,9 +13,8 @@ import static java.time.Instant.ofEpochMilli;
 import static java.time.LocalDate.parse;
 import static java.time.ZoneId.systemDefault;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
+
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
@@ -84,9 +81,9 @@ public class EmployeesCollections {
       .flatMap(Collection::stream)
       .collect(toList());
 
-    System.out.println(employees);
-    groupByAgeCategory(googleWorkers);
-    groupByEmail(googleWorkers);
+      groupByAgeCategory(googleWorkers);
+      groupByWorkExperience(employees);
+      System.out.println(groupByEmail(googleWorkers));
   }
 
   private List<Employee> getEmployeesByCompany(List<Employee> employees, String company) {
@@ -100,21 +97,61 @@ public class EmployeesCollections {
   }
 
   private Map<String, List<Worker>> groupByAgeCategory(List<Worker> workers) {
-    //Young = "young" from 20 to 35 [20; 35)
-    //Old = "old" more that 55 [55; +inf)
-    //Medium = "medium" from 35 to 55 [35; 55)
-    return emptyMap();
+      String YOUNG = "young workers";
+      String MEDIUM = "middle-aged workers";
+      String OLD = "old workers";
+
+      List<Worker> youngWorkers = new ArrayList<>();
+      List<Worker> middleAgedWorkers = new ArrayList<>();
+      List<Worker> oldWorkers = new ArrayList<>();
+
+      Map<String, List<Worker>> group = new HashMap<>();
+      workers.forEach(gr -> {
+          long age = ChronoUnit.YEARS.between(gr.getDateOfBirth(), LocalDate.now());
+
+          if (age >= 20 && age < 35) youngWorkers.add(gr);
+          if (age >= 35 && age < 55) middleAgedWorkers.add(gr);
+          if (age >= 55) oldWorkers.add(gr);
+      });
+      group.put(YOUNG, youngWorkers);
+      group.put(MEDIUM, middleAgedWorkers);
+      group.put(OLD, oldWorkers);
+      group.forEach((key, value) -> {
+          System.out.println(key);
+          System.out.println(value);
+      });
+
+      return group;
   }
 
   private Map<String, List<Worker>> groupByEmail(List<Worker> workers) {
-    return emptyMap();
+      Map<String, List<Worker>> group = new HashMap<>();
+      workers.forEach(gr ->
+              group.put(gr.getEmail(), group.containsKey(gr.getEmail())
+                      ? group.get("???".add(gr)) : asList(gr)));
+
+      return group;
   }
 
-  private Map<Integer, List<Worker>> groupByWorkExperience(List<Worker> workers) {
-    // Work experience 1 year -> 1 worker
-    // Work experience 10 years -> 2 workers
-    return emptyMap();
-  }
+  private Map<Integer, Integer> groupByWorkExperience(List<Employee> employees) {
+      Map<Integer, Integer> group = new TreeMap<>();
+      employees.forEach(gr ->
+          group.put(gr.getExperience(), group.containsKey(gr.getExperience())
+                  ? group.get(gr.getExperience()) + 1 : 1));
+
+      System.out.println("work exp - employee");
+      group.forEach((key, value) -> {
+          if (key == 1 && value == 1)
+              System.out.println(key + " year - " + value + " worker");
+          else if (key == 1)
+              System.out.println(key + " year - " + value + " workers");
+          else if (value == 1)
+              System.out.println(key + " years - " + value + " worker");
+          else
+              System.out.println(key + " years - " + value + " workers");
+      });
+        return group;
+    }
 
   // TODO: 25.09.2017 Organization as class with name, phone and location
 
